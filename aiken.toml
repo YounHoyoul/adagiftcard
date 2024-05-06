@@ -1,0 +1,14 @@
+name = "hoyoulyoun/ada-gift-card"
+version = "0.1.0"
+license = "Apache-2.0"
+description = "Aiken contracts for project 'hoyoulyoun/ada-gift-card'"
+
+[repository]
+user = "hoyoulyoun"
+project = "ada-gift-card"
+platform = "github"
+
+[[dependencies]]
+name = "aiken-lang/stdlib"
+version = "1.8.0"
+source = "github"
