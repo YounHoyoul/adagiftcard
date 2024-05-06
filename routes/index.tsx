@@ -1,26 +1,25 @@
 import { Head } from "$fresh/runtime.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { load } from "$std/dotenv/mod.ts";
 
 import Oneshot from "~/islands/Oneshot.tsx";
 import { readValidators, Validators } from "~/lib/readValidators.ts";
 
 interface Data {
   validators: Validators;
-  envs: Record<string, string>;
+  network: string;
 }
 
 export const handler: Handlers<Data> = {
-  async GET(_req, ctx) {
+  GET(_req, ctx) {
     const validators = readValidators();
-    const envs = await load();
+    const network = Deno.env.get("NETWORK")!;
 
-    return ctx.render({ validators, envs });
+    return ctx.render({ validators, network });
   },
 };
 
 export default function Home({ data }: PageProps<Data>) {
-  const { validators, envs } = data;
+  const { validators, network } = data;
 
   return (
     <>
@@ -29,7 +28,7 @@ export default function Home({ data }: PageProps<Data>) {
       </Head>
 
       <div class="max-w-2xl mx-auto mt-20 mb-10">
-        <Oneshot validators={validators} envs={envs} />
+        <Oneshot validators={validators} network={network} />
       </div>
     </>
   );

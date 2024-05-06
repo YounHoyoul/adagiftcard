@@ -9,10 +9,10 @@ import { getLucid } from "~/lib/getLucid.ts";
 
 export interface OneshotProps {
   validators: Validators;
-  envs: Record<string, string>;
+  network: string;
 }
 
-export default function Oneshot({ validators, envs }: OneshotProps) {
+export default function Oneshot({ validators, network }: OneshotProps) {
   const [lucid, setLucid] = useState<Lucid | null>(null);
   const [tokenName, setTokenName] = useState<string>("");
   const [parameterizedContracts, setParameterizedContracts] = useState<
@@ -27,10 +27,10 @@ export default function Oneshot({ validators, envs }: OneshotProps) {
   const [waitingUnlockTx, setWaitingUnlockTx] = useState<boolean>(false);
 
   useEffect(() => {
-    getLucid(envs).then((lucid) => {
+    getLucid(network).then((lucid) => {
       setLucid(lucid);
     });
-  }, [envs]);
+  }, [network]);
 
   useEffect(() => {
     if (lucid) {
