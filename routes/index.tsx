@@ -7,19 +7,21 @@ import { readValidators, Validators } from "~/lib/readValidators.ts";
 interface Data {
   validators: Validators;
   network: string;
+  checkInterval: number;
 }
 
 export const handler: Handlers<Data> = {
   GET(_req, ctx) {
     const validators = readValidators();
     const network = Deno.env.get("NETWORK")!;
+    const checkInterval = parseInt(Deno.env.get("CALL_INTERVAL_MILLISECONDS")!);
 
-    return ctx.render({ validators, network });
+    return ctx.render({ validators, network, checkInterval });
   },
 };
 
 export default function Home({ data }: PageProps<Data>) {
-  const { validators, network } = data;
+  const { validators, network, checkInterval } = data;
 
   return (
     <>
@@ -28,7 +30,11 @@ export default function Home({ data }: PageProps<Data>) {
       </Head>
 
       <div class="max-w-2xl mx-auto mt-20 mb-10">
-        <Oneshot validators={validators} network={network} />
+        <Oneshot
+          validators={validators}
+          network={network}
+          checkInterval={checkInterval}
+        />
       </div>
     </>
   );

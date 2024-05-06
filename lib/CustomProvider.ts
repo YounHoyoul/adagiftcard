@@ -17,6 +17,14 @@ import {
 } from "lucid/mod.ts";
 
 export class CustomProvider implements Provider {
+  network: string;
+  checkInterval: number;
+
+  constructor(network: string, checkInterval: number) {
+    this.network = network;
+    this.checkInterval = checkInterval;
+  }
+
   async getProtocolParameters(): Promise<ProtocolParameters> {
     return (await fetch(`/api/provider/parameters`)).json();
   }
@@ -69,9 +77,7 @@ export class CustomProvider implements Provider {
     return (await fetch(`/api/provider/datum?datumHash=${datumHash}`)).json();
   }
 
-  awaitTx(txHash: TxHash, checkInterval?: number): Promise<boolean> {
-    checkInterval = 20000;
-
+  awaitTx(txHash: TxHash, _checkInterval?: number): Promise<boolean> {
     return new Promise((res) => {
       const confirmation = setInterval(async () => {
         const isConfirmed: boolean = await fetch(
@@ -82,7 +88,7 @@ export class CustomProvider implements Provider {
           await new Promise((res) => setTimeout(() => res(1), 1000));
           return res(true);
         }
-      }, checkInterval);
+      }, this.checkInterval);
     });
   }
 

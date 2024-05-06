@@ -3,16 +3,19 @@ import { Constr, Data, fromText, Lucid } from "lucid/mod.ts";
 
 import { Input } from "~/components/Input.tsx";
 import { Button } from "~/components/Button.tsx";
-import AppliedValidators, { applyParams } from "../lib/applyParams.ts";
-import { Validators } from "../lib/readValidators.ts";
+import AppliedValidators, { applyParams } from "~/lib/applyParams.ts";
+import { Validators } from "~/lib/readValidators.ts";
 import { getLucid } from "~/lib/getLucid.ts";
 
 export interface OneshotProps {
   validators: Validators;
   network: string;
+  checkInterval: number;
 }
 
-export default function Oneshot({ validators, network }: OneshotProps) {
+export default function Oneshot(
+  { validators, network, checkInterval }: OneshotProps,
+) {
   const [lucid, setLucid] = useState<Lucid | null>(null);
   const [tokenName, setTokenName] = useState<string>("");
   const [parameterizedContracts, setParameterizedContracts] = useState<
@@ -27,7 +30,7 @@ export default function Oneshot({ validators, network }: OneshotProps) {
   const [waitingUnlockTx, setWaitingUnlockTx] = useState<boolean>(false);
 
   useEffect(() => {
-    getLucid(network).then((lucid) => {
+    getLucid(network, checkInterval).then((lucid) => {
       setLucid(lucid);
     });
   }, [network]);

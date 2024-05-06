@@ -14,6 +14,9 @@ const getLucidNetwork = (network: string): Network => {
   }
 };
 
-export async function getLucid(network: string) {
-  return await Lucid.new(new CustomProvider(), getLucidNetwork(network));
+export async function getLucid(network: string, checkInterval: number) {
+  return await Lucid.new(
+    new CustomProvider(network, checkInterval),
+    getLucidNetwork(network),
+  );
 }
